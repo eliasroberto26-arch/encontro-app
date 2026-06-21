@@ -21,11 +21,7 @@
     },
     "android": {
       "package": "com.encontro.app",
-      "versionCode": 1,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
