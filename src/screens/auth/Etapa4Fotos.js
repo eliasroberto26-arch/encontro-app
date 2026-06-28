@@ -179,4 +179,199 @@ export default function Etapa4Fotos({ route, navigation }) {
             <View key={index} style={styles.fotoContainer}>
               <Image source={{ uri: foto }} style={styles.foto} />
               <TouchableOpacity
-                style={styles
+                style={styles.btnRemover}
+                onPress={() => removerFoto(index)}
+              >
+                <Text style={styles.btnRemoverTexto}>✕</Text>
+              </TouchableOpacity>
+              {index === 0 && (
+                <View style={styles.badgePrincipal}>
+                  <Text style={styles.badgeTexto}>Principal</Text>
+                </View>
+              )}
+            </View>
+          ))}
+
+          {fotos.length < 6 && (
+            <TouchableOpacity
+              style={styles.btnAdicionar}
+              onPress={escolherFoto}
+            >
+              <Text style={styles.btnAdicionarIcone}>+</Text>
+              <Text style={styles.btnAdicionarTexto}>Adicionar</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View style={styles.infoBox}>
+          <Text style={styles.infoTexto}>
+            • Mínimo: 2 fotos{'\n'}
+            • Máximo: 6 fotos{'\n'}
+            • Primeira foto será a principal{'\n'}
+            • Evite fotos com óculos escuros
+          </Text>
+        </View>
+
+        <Text style={styles.contador}>
+          {fotos.length}/6 fotos adicionadas
+        </Text>
+
+        <TouchableOpacity
+          style={[
+            styles.botao,
+            (loading || fotos.length < 2) && styles.botaoDesabilitado
+          ]}
+          onPress={handleContinuar}
+          disabled={loading || fotos.length < 2}
+        >
+          {loading? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.botaoTexto}>
+              {fotos.length < 2? `Adicione mais ${2 - fotos.length}` : 'Continuar'}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollContent: {
+    padding: 24,
+    paddingBottom: 40,
+  },
+  voltar: {
+    marginBottom: 20,
+  },
+  voltarTexto: {
+    fontSize: 16,
+    color: '#FF4B8B',
+    fontWeight: '600',
+  },
+  logo: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#FF4B8B',
+    marginBottom: 8,
+  },
+  titulo: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#333',
+    marginBottom: 8,
+  },
+  subtitulo: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#666',
+    marginBottom: 32,
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    marginBottom: 20,
+  },
+  fotoContainer: {
+    width: '31%',
+    aspectRatio: 3/4,
+    position: 'relative',
+  },
+  foto: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 12,
+    backgroundColor: '#F0F0F0',
+  },
+  btnRemover: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#FF4B8B',
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  btnRemoverTexto: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  badgePrincipal: {
+    position: 'absolute',
+    bottom: 8,
+    left: 8,
+    backgroundColor: '#FF4B8B',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  badgeTexto: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  btnAdicionar: {
+    width: '31%',
+    aspectRatio: 3/4,
+    borderWidth: 2,
+    borderColor: '#E0E0E0',
+    borderStyle: 'dashed',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FAFAFA',
+  },
+  btnAdicionarIcone: {
+    fontSize: 40,
+    color: '#FF4B8B',
+    marginBottom: 4,
+  },
+  btnAdicionarTexto: {
+    fontSize: 12,
+    color: '#666',
+  },
+  infoBox: {
+    backgroundColor: '#FFF0F5',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+  },
+  infoTexto: {
+    fontSize: 13,
+    color: '#666',
+    lineHeight: 20,
+  },
+  contador: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#999',
+    marginBottom: 16,
+  },
+  botao: {
+    backgroundColor: '#FF4B8B',
+    padding: 18,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  botaoDesabilitado: {
+    opacity: 0.6,
+  },
+  botaoTexto: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
