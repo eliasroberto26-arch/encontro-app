@@ -44,7 +44,7 @@ export default function Etapa5Preferencias({ route, navigation }) {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      navigation.navigate('Etapa6Finalizar', {
+      navigation.navigate('Etapa6Termos', {
         metodo,
         valor,
         senha,
