@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "MeetPerto",
-    "slug": "MeetPerto",
+    "slug": "meetperto",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF4B8B"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,20 +19,20 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.MeetPerto.app",
+      "bundleIdentifier": "com.meetperto.app",
       "buildNumber": "2.0.0"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FF4B8B"
       },
-      "package": "com.MeetPerto.app",
+      "package": "com.meetperto.app",
       "versionCode": 2,
       "splash": {
         "image": "./assets/splash.png",
         "resizeMode": "contain",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FF4B8B"
       }
     },
     "web": {
@@ -46,13 +46,13 @@
           "image": "./assets/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#FF4B8B"
         }
       ]
     ],
     "extra": {
       "eas": {
-        "projectId": "a1b2c3d4-e5f6-7890-abcd-1234567890al"
+        "projectId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
       }
     }
   }
