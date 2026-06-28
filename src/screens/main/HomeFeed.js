@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import * as Linking from 'expo-linking';
 import Swiper from 'react-native-deck-swiper';
 import { Ionicons } from '@expo/vector-icons';
+import { geohashForLocation } from 'geofire-common'; // NOVO
 import { db, auth } from '../firebaseConfig';
 import {
   collection,
@@ -13,7 +14,7 @@ import {
   getDoc,
   getDocs,
   query,
-  where, // FIX: esse import tava faltando
+  where,
   serverTimestamp,
   limit
 } from 'firebase/firestore';
@@ -63,9 +64,13 @@ export default function HomeFeed({ navigation }) {
       let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
       setLocation(location.coords);
 
+      // NOVO: gera e salva o geohash
+      const hash = geohashForLocation([location.coords.latitude, location.coords.longitude]);
+
       await setDoc(doc(db, 'usuarios', currentUser.uid), {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
+        geohash: hash, // NOVO
         online: true,
         ultimoAcesso: serverTimestamp()
       }, { merge: true });
@@ -104,7 +109,7 @@ export default function HomeFeed({ navigation }) {
 
         usuarios.push({
           id: docSnap.id,
-        ...data,
+       ...data,
           distancia
         });
       });
