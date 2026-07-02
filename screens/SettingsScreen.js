@@ -1,37 +1,63 @@
-import { Switch, View, Text, Alert } from 'react-native';
-import { Colors } from '../theme/colors';
+import React, { useState, useEffect } from 'react'
+import { View, Text, Switch, TouchableOpacity, StyleSheet, Alert } from 'react-native'
+import { Colors, Gradients } from './theme/colors'
+import { auth, db } from '../firebaseConfig'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { LinearGradient } from 'expo-linear-gradient'
+import { Ionicons } from '@expo/vector-icons'
 
 export default function SettingsScreen({ navigation }) {
-  const [invisibleMode, setInvisibleMode] = useState(false);
-  const [userPlan, setUserPlan] = useState('gratis');
+  const [invisibleMode, setInvisibleMode] = useState(false)
+  const [isVip, setIsVip] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const user = auth.currentUser
 
-  const toggleInvisibleMode = async (value) => {
-    if (userPlan!== 'vip') {
-      navigation.navigate('Paywall', { feature: 'invisivel' });
-      return;
-    }
+  useEffect(() => {
+    loadUserData()
+  }, [])
+
+  const loadUserData = async () => {
+    if (!user) return
+    const userRef = doc(db, 'users', user.uid)
+    const userSnap = await getDoc(userRef)
     
-    await updateUser(user.uid, { invisibleMode: value });
-    setInvisibleMode(value);
+    if (userSnap.exists()) {
+      const data = userSnap.data()
+      setInvisibleMode(data.invisibleMode || false)
+      setIsVip(data.subscription === 'vip')
+    }
+    setLoading(false)
   }
 
-  return (
-    <View>
-      {userPlan === 'vip' && (
-        <View style={styles.settingRow}>
-          <View>
-            <Text style={styles.title}>Modo Invisível</Text>
-            <Text style={[styles.subtitle, { color: Colors.textLight }]}>
-              Navegue sem aparecer em "quem te visitou"
-            </Text>
-          </View>
-          <Switch 
-            value={invisibleMode} 
-            onValueChange={toggleInvisibleMode}
-            trackColor={{ true: Colors.vip }}
-          />
-        </View>
-      )}
-    </View>
-  );
-}
+  const toggleInvisibleMode = async () => {
+    if (!isVip) {
+      Alert.alert(
+        'Recurso VIP', 
+        'O Modo Invisível é exclusivo para assinantes VIP. Quer ver os planos?',
+        [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Ver planos', onPress: () => navigation.navigate('Planos') }
+        ]
+      )
+      return
+    }
+
+    const newValue = !invisibleMode
+    setInvisibleMode(newValue)
+    
+    const userRef = doc(db, 'users', user.uid)
+    await updateDoc(userRef, { invisibleMode: newValue })
+  }
+
+  const SettingItem = ({ icon, title, value, onToggle, locked }) => (
+    <TouchableOpacity 
+      style={styles.settingRow} 
+      onPress={onToggle}
+      disabled={loading}
+    >
+      <View style={styles.settingLeft}>
+        <Ionicons name={icon} size={24} color={locked ? Colors.disabled : Colors.text} />
+        <Text style={[styles.settingText, locked && styles.lockedText]}>{title}</Text>
+        {locked && <Ionicons name="lock-closed" size={16} color={Colors.vip} />}
+      </View>
+      
